@@ -54,6 +54,28 @@ def deal_tiles(bag):
     return player_hand
 
 
+def valid_player_input(player_word, player_hand):
+
+    for letter in player_word:
+        if letter not in player_hand:
+            print('Invalid input, please only use letters available in hand, try again \n')
+            return False
+    else:
+        return True
+    
+
+
+def check_dictionary(player_word, word_score):
+
+    dictionary = open("dictionary.txt", "r")
+    if player_word.lower() in dictionary.read():
+        print(f' \n Your input is a valid word found in the dictionary, scoring {word_score} point')
+        return True
+    else:
+        print('Invalid word not found in the dictionary')
+        return False
+        
+
 # Task 1
 letter_values = letters_to_points(letter_value_groups)
 guardian_score = calculate_word_score('GUARDIAN', letter_values)
@@ -66,3 +88,19 @@ shuffle(bag)
 player_hand = deal_tiles(bag)
 print("\n Your Hand is:")
 print(* player_hand, sep=', ')
+
+# Task 4
+
+flag = True
+while flag:
+    player_word = input("\n Using the set of letters above create the highest scoring word: ")
+
+    if player_word == '0':
+        exit()
+    elif valid_player_input(player_word, player_hand):
+        flag = False
+
+word_score = calculate_word_score(player_word, letter_values)
+is_valid_word = check_dictionary(player_word, word_score)
+
+
