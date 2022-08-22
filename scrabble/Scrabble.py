@@ -67,16 +67,42 @@ def valid_player_input(player_word, player_hand):
 
 def check_dictionary(player_word, word_score):
 
-    dictionary = open("dictionary.txt", "r")
+    dictionary = open("technical-tests/scrabble/dictionary.txt", "r")
     if player_word.lower() in dictionary.read():
         print(f' \n Your input is a valid word found in the dictionary, scoring {word_score} point')
         return True
     else:
         print('Invalid word not found in the dictionary')
         return False
-        
+
+def find_longest_word(player_hand):
+
+    longest_word = ''
+
+    dictionary = open("technical-tests/scrabble/dictionary.txt", "r")
+    words = dictionary.readlines()
+    
+    for word in words:
+        if len(longest_word) < len(word):
+            
+            current_dictionary_word = [*word]
+            current_player_hand = player_hand
+    
+            for letter in current_dictionary_word:
+                if letter.upper() in current_player_hand:
+
+                    current_dictionary_word.remove(letter)
+                    current_player_hand.remove(letter.upper())
+
+            current_dictionary_word.remove('\n')
+            
+            if len(current_dictionary_word) == 0:
+                longest_word = word
+    print(f"The longest word with the current player hand is {len(longest_word)} letters long, for instance {longest_word}")
+    return longest_word
 
 # Task 1
+
 letter_values = letters_to_points(letter_value_groups)
 guardian_score = calculate_word_score('GUARDIAN', letter_values)
 
@@ -104,3 +130,25 @@ word_score = calculate_word_score(player_word, letter_values)
 is_valid_word = check_dictionary(player_word, word_score)
 
 
+# Task 5
+longest_word = find_longest_word(player_hand)
+# Trying to debug, not sure why current_player_hand is not being reassigned back to player_hand
+# both are empty but should not be, every iteration should reassign
+
+
+# Improvements #
+
+
+##### Validators #####
+# stop users from using same letters repeatedly 
+# allow user input to be case-insensitive
+
+##### modularize programme into 3 parts: #####
+# Main game 
+# Data structures
+# Auxiliary functions and global variables
+    
+##### Longest word #####
+# what type of search did i implement? might look at all words but it doesn't check them all so is it linear?
+# search moves on from word as soon as letter not in hand
+# also skips words which are not longer than current longest word
